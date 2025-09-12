@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Meu Perfil - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="user-info">
+    <div class="welcome-text">
+        <i class="fas fa-sparkles"></i> Bem-vinda(o), {{ session.user_name }}!
+    </div>
+    <p class="page-subtitle">
+        Gerencie suas informações pessoais abaixo
+    </p>
+</div>
+
+<div class="card profile-container">
+    <div class="text-center mb-3">
+        <h2 class="page-title" style="margin-bottom: 20px;">
+            <i class="fas fa-user-edit"></i> Meus Dados
+        </h2>
+    </div>
+
+    <form method="POST" action="{{ url_for('update_profile') }}" id="profileForm">
+        <div class="form-group">
+            <label for="name">
+                <i class="fas fa-user"></i> Nome Completo
+            </label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-control" 
+                value="{{ user.name }}"
+                required
+                maxlength="50"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="email">
+                <i class="fas fa-envelope"></i> Email
+            </label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-control" 
+                value="{{ user.email }}"
+                required
+                maxlength="50"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="cpf">
+                <i class="fas fa-id-card"></i> CPF
+            </label>
+            <input 
+                type="text" 
+                id="cpf" 
+                name="cpf" 
+                class="form-control readonly-field" 
+                value="{{ user.cpf }}"
+                readonly
+            >
+            <small class="field-note">O CPF não pode ser alterado</small>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">
+                <i class="fas fa-venus-mars"></i> Gênero
+            </label>
+            <select id="gender" name="gender" class="form-control readonly-field" disabled>
+                <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Masculino</option>
+                <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Feminino</option>
+                <option value="I" {% if user.gender == 'I' %}selected{% endif %}>Prefiro não informar</option>
+            </select>
+            <small class="field-note">O gênero não pode ser alterado</small>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">
+                <i class="fas fa-phone"></i> Telefone
+            </label>
+            <input 
+                type="text" 
+                id="phone" 
+                name="phone" 
+                class="form-control" 
+                value="{{ user.phone }}"
+                required
+                maxlength="14"
+            >
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-full-width" style="margin-bottom: 15px;">
+                <i class="fas fa-save"></i> Salvar Alterações
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center">
+        <a href="{{ url_for('logout') }}" class="btn logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Sair da Conta
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

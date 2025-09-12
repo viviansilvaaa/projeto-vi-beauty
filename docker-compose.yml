@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: projeto_vivian_app
+    restart: always
+    environment:
+      DB_HOST: mysql-db
+      DB_USER: vivian_user
+      DB_PASSWORD: vivian_password
+      DB_NAME: users
+      DB_PORT: 3306
+    ports:
+      - "8080:8080"
+    networks:
+      - vivian_network
+    volumes:
+      - app_sessions:/app/flask_session
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: projeto_vivian_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: users
+      MYSQL_USER: vivian_user
+      MYSQL_PASSWORD: vivian_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/users.sql:/docker-entrypoint-initdb.d/users.sql
+    networks:
+      - vivian_network
+
+volumes:
+  mysql_data:
+  app_sessions:
+
+networks:
+  vivian_network:
+    driver: bridge

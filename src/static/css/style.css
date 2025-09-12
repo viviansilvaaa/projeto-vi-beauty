@@ -1,0 +1,377 @@
+/* Vi Beauty - Salão de Beleza */
+
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #4a1a4a 0%, #6a2c70 100%);
+    padding: 20px 0;
+    box-shadow: 0 4px 15px rgba(106, 44, 112, 0.3);
+    margin-bottom: 30px;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #d4af37, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Navegação */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.nav-menu a:hover {
+    background: linear-gradient(45deg, #d4af37, #ffd700);
+    color: #1a1a1a;
+    border-color: #ffd700;
+    transform: translateY(-2px);
+}
+
+/* Cards */
+.card {
+    background: linear-gradient(145deg, #2d1b2e, #4a1a4a);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    margin-bottom: 30px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Formulários */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #d4af37;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+    border-color: #d4af37;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    animation: pulse 0.5s ease-in-out;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-control:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Botões */
+.btn {
+    background: linear-gradient(45deg, #6a2c70, #4a1a4a);
+    color: #ffffff;
+    border: 2px solid #d4af37;
+    padding: 15px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #d4af37, #ffd700);
+    color: #1a1a1a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+    animation: pulse 0.3s ease-in-out;
+}
+
+.btn:focus {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #d4af37, #ffd700);
+    color: #1a1a1a;
+    border-color: #ffd700;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #6a2c70, #4a1a4a);
+    color: #ffffff;
+    border-color: #d4af37;
+}
+
+/* Alertas */
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.2);
+    border-left-color: #28a745;
+    color: #d4edda;
+}
+
+.alert-error {
+    background: rgba(220, 53, 69, 0.2);
+    border-left-color: #dc3545;
+    color: #f8d7da;
+}
+
+/* Classes utilitárias */
+.text-center {
+    text-align: center;
+}
+
+.mt-3 {
+    margin-top: 20px;
+}
+
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Componentes específicos */
+.user-info {
+    background: linear-gradient(45deg, #6a2c70, #4a1a4a);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.welcome-text {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #d4af37;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%);
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.footer p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Componente de loading */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    border-top-color: #d4af37;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    color: #d4af37;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estilos específicos para pages */
+.login-container {
+    max-width: 450px;
+    margin: 50px auto;
+}
+
+.login-info-card {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.register-container {
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.profile-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.readonly-field {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
+
+.logout-btn {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border-color: #dc3545;
+}
+
+.field-note {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.page-title {
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.info-card-title {
+    color: #d4af37;
+    margin-bottom: 15px;
+}
+
+.test-credentials {
+    color: #d4af37;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .card {
+        padding: 25px;
+        margin: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        margin: 5px;
+        padding: 20px;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+    }
+}
