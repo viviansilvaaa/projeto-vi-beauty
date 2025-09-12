@@ -18,7 +18,8 @@ services:
     volumes:
       - app_sessions:/app/flask_session
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
 
   mysql-db:
     image: mysql:8.0
@@ -36,6 +37,10 @@ services:
       - ./db/users.sql:/docker-entrypoint-initdb.d/users.sql
     networks:
       - vivian_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 volumes:
   mysql_data:
