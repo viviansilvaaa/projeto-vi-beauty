@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Salão - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="card register-container">
+    <div class="text-center mb-3">
+        <h2 class="page-title">
+            <i class="fas fa-store"></i> Cadastrar Salão
+        </h2>
+        <p class="page-subtitle">
+            Preencha os dados abaixo para cadastrar um novo salão no sistema
+        </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('register_salon') }}" id="registerSalonForm">
+        <div class="form-group">
+            <label for="name">
+                <i class="fas fa-store"></i> Nome do Salão <span class="required">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-control" 
+                placeholder="Digite o nome do salão"
+                required
+                maxlength="255"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="description">
+                <i class="fas fa-align-left"></i> Descrição Curta
+            </label>
+            <textarea 
+                id="description" 
+                name="description" 
+                class="form-control" 
+                placeholder="Digite uma breve descrição do salão (opcional)"
+                maxlength="255"
+                rows="3"
+            ></textarea>
+            <small class="field-note">Máximo de 255 caracteres</small>
+        </div>
+
+        <div class="form-group">
+            <label for="address">
+                <i class="fas fa-map-marker-alt"></i> Endereço Completo <span class="required">*</span>
+            </label>
+            <textarea 
+                id="address" 
+                name="address" 
+                class="form-control" 
+                placeholder="Digite o endereço completo do salão"
+                required
+                maxlength="500"
+                rows="3"
+            ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">
+                <i class="fas fa-phone"></i> Telefone para Contato <span class="required">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="phone" 
+                name="phone" 
+                class="form-control" 
+                placeholder="(11) 99999-9999"
+                required
+                maxlength="15"
+            >
+            <small class="field-note">Formato: (XX) XXXXX-XXXX</small>
+        </div>
+
+        <div class="form-group">
+            <label for="image_url">
+                <i class="fas fa-image"></i> URL da Imagem de Fachada <span class="required">*</span>
+            </label>
+            <input 
+                type="url" 
+                id="image_url" 
+                name="image_url" 
+                class="form-control" 
+                placeholder="https://exemplo.com/imagem.jpg"
+                required
+                maxlength="500"
+            >
+            <small class="field-note">Informe uma URL válida da imagem (ex: https://...)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="business_hours">
+                <i class="fas fa-clock"></i> Horário de Funcionamento
+            </label>
+            <input 
+                type="text" 
+                id="business_hours" 
+                name="business_hours" 
+                class="form-control" 
+                placeholder="Ex: Seg-Sex: 09h-18h, Sáb: 09h-13h"
+                maxlength="255"
+            >
+            <small class="field-note">Opcional</small>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-full-width">
+                <i class="fas fa-check"></i> Cadastrar Salão
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('profile') }}" class="btn mt-3">
+            <i class="fas fa-arrow-left"></i> Voltar ao Perfil
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/register_salon.js') }}"></script>
+{% endblock %}
+

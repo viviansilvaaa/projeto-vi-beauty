@@ -121,6 +121,12 @@ body {
     background: rgba(255, 255, 255, 0.05);
 }
 
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* Botões */
 .btn {
     background: linear-gradient(45deg, #6a2c70, #4a1a4a);
@@ -314,6 +320,11 @@ body {
 .field-note {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
+}
+
+.required {
+    color: #dc3545;
+    font-weight: bold;
 }
 
 .page-title {

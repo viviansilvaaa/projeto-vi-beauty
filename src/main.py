@@ -35,6 +35,17 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        if session['user_id'] != 1:
+            flash('Acesso negado! Apenas administradores podem acessar esta página.', 'error')
+            return redirect(url_for('profile'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 def hash_password(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
@@ -193,6 +204,47 @@ def update_profile():
             cur.close()
     
     return redirect(url_for('profile'))
+
+@app.route('/register_salon', methods=['GET', 'POST'])
+@admin_required
+def register_salon():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        description = request.form.get('description', '').strip()
+        address = request.form.get('address', '').strip()
+        phone = request.form.get('phone', '').strip()
+        image_url = request.form.get('image_url', '').strip()
+        business_hours = request.form.get('business_hours', '').strip()
+        
+        try:
+            connection = get_db_connection()
+            cur = connection.cursor()
+            
+            # Verifica se já existe um salão com o mesmo nome
+            cur.execute("SELECT id FROM salons WHERE name = %s", (name,))
+            if cur.fetchone():
+                flash('Já existe um salão cadastrado com este nome!', 'error')
+                return render_template('register_salon.html')
+            
+            # Insere o novo salão
+            cur.execute(
+                "INSERT INTO salons (name, description, address, phone, image_url, business_hours) VALUES (%s, %s, %s, %s, %s, %s)",
+                (name, description if description else None, address, phone, image_url, business_hours if business_hours else None)
+            )
+            connection.commit()
+            
+            flash('Salão cadastrado com sucesso!', 'success')
+            return redirect(url_for('register_salon'))
+            
+        except Exception as e:
+            flash(f'Erro ao cadastrar salão: {str(e)}', 'error')
+        finally:
+            if 'connection' in locals():
+                connection.close()
+            if 'cur' in locals():
+                cur.close()
+    
+    return render_template('register_salon.html')
 
 @app.route('/logout')
 def logout():

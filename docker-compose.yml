@@ -34,7 +34,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./db/users.sql:/docker-entrypoint-initdb.d/users.sql
+      - ./db/all_tables.sql:/docker-entrypoint-initdb.d/all_tables.sql
     networks:
       - vivian_network
     healthcheck:
