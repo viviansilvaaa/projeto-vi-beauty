@@ -246,6 +246,121 @@ def register_salon():
     
     return render_template('register_salon.html')
 
+@app.route('/list_salons')
+@admin_required
+def list_salons():
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        # Busca todos os salões ordenados por nome
+        cur.execute("SELECT * FROM salons ORDER BY name ASC")
+        salons = cur.fetchall()
+        
+        return render_template('list_salons.html', salons=salons)
+        
+    except Exception as e:
+        flash(f'Erro ao carregar salões: {str(e)}', 'error')
+        return redirect(url_for('profile'))
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/edit_salon/<int:salon_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_salon(salon_id):
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        description = request.form.get('description', '').strip()
+        address = request.form.get('address', '').strip()
+        phone = request.form.get('phone', '').strip()
+        image_url = request.form.get('image_url', '').strip()
+        business_hours = request.form.get('business_hours', '').strip()
+        
+        try:
+            connection = get_db_connection()
+            cur = connection.cursor()
+            
+            # Verifica se já existe outro salão com o mesmo nome
+            cur.execute("SELECT id FROM salons WHERE name = %s AND id != %s", (name, salon_id))
+            if cur.fetchone():
+                flash('Já existe outro salão cadastrado com este nome!', 'error')
+                return redirect(url_for('edit_salon', salon_id=salon_id))
+            
+            # Atualiza os dados do salão
+            cur.execute(
+                "UPDATE salons SET name = %s, description = %s, address = %s, phone = %s, image_url = %s, business_hours = %s WHERE id = %s",
+                (name, description if description else None, address, phone, image_url, business_hours if business_hours else None, salon_id)
+            )
+            connection.commit()
+            
+            flash('Salão atualizado com sucesso!', 'success')
+            return redirect(url_for('list_salons'))
+            
+        except Exception as e:
+            flash(f'Erro ao atualizar salão: {str(e)}', 'error')
+        finally:
+            if 'connection' in locals():
+                connection.close()
+            if 'cur' in locals():
+                cur.close()
+    
+    # GET - Busca os dados do salão para edição
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        cur.execute("SELECT * FROM salons WHERE id = %s", (salon_id,))
+        salon = cur.fetchone()
+        
+        if not salon:
+            flash('Salão não encontrado!', 'error')
+            return redirect(url_for('list_salons'))
+        
+        return render_template('edit_salon.html', salon=salon)
+        
+    except Exception as e:
+        flash(f'Erro ao carregar dados do salão: {str(e)}', 'error')
+        return redirect(url_for('list_salons'))
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/delete_salon/<int:salon_id>', methods=['POST'])
+@admin_required
+def delete_salon(salon_id):
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        # Verifica se o salão existe
+        cur.execute("SELECT name FROM salons WHERE id = %s", (salon_id,))
+        salon = cur.fetchone()
+        
+        if not salon:
+            flash('Salão não encontrado!', 'error')
+            return redirect(url_for('list_salons'))
+        
+        # Deleta o salão
+        cur.execute("DELETE FROM salons WHERE id = %s", (salon_id,))
+        connection.commit()
+        
+        flash(f'Salão "{salon["name"]}" excluído com sucesso!', 'success')
+        
+    except Exception as e:
+        flash(f'Erro ao excluir salão: {str(e)}', 'error')
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+    
+    return redirect(url_for('list_salons'))
+
 @app.route('/logout')
 def logout():
     session.clear()

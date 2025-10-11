@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Salões Cadastrados - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="salons-container">
+    <div class="text-center mb-3">
+        <h2 class="page-title">
+            <i class="fas fa-store"></i> Salões Cadastrados
+        </h2>
+        <p class="page-subtitle">
+            Visualize e gerencie os salões cadastrados no sistema
+        </p>
+    </div>
+
+    <div class="actions-bar">
+        <a href="{{ url_for('register_salon') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Cadastrar Novo Salão
+        </a>
+    </div>
+
+    {% if salons %}
+        <div class="salons-grid">
+            {% for salon in salons %}
+                <div class="salon-card">
+                    <div class="salon-image">
+                        <img src="{{ salon.image_url }}" alt="{{ salon.name }}" onerror="this.src='https://via.placeholder.com/400x300/6a2c70/ffffff?text=Sem+Imagem'">
+                    </div>
+                    
+                    <div class="salon-content">
+                        <h3 class="salon-name">
+                            <i class="fas fa-cut"></i> {{ salon.name }}
+                        </h3>
+                        
+                        {% if salon.description %}
+                            <p class="salon-description">
+                                <i class="fas fa-info-circle"></i> {{ salon.description }}
+                            </p>
+                        {% endif %}
+                        
+                        <div class="salon-info">
+                            <p class="salon-address">
+                                <i class="fas fa-map-marker-alt"></i> {{ salon.address }}
+                            </p>
+                            
+                            <p class="salon-phone">
+                                <i class="fas fa-phone"></i> {{ salon.phone }}
+                            </p>
+                            
+                            {% if salon.business_hours %}
+                                <p class="salon-hours">
+                                    <i class="fas fa-clock"></i> {{ salon.business_hours }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="salon-meta">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-plus"></i> 
+                                Cadastrado em: {{ salon.created_at.strftime('%d/%m/%Y às %H:%M') if salon.created_at else 'N/A' }}
+                            </small>
+                            {% if salon.updated_at and salon.updated_at != salon.created_at %}
+                                <small class="text-muted">
+                                    <i class="fas fa-edit"></i> 
+                                    Atualizado em: {{ salon.updated_at.strftime('%d/%m/%Y às %H:%M') }}
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="salon-actions">
+                            <a href="{{ url_for('edit_salon', salon_id=salon.id) }}" class="btn btn-edit">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            
+                            <button 
+                                onclick="confirmDelete({{ salon.id }}, '{{ salon.name }}')" 
+                                class="btn btn-delete">
+                                <i class="fas fa-trash-alt"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card text-center empty-state">
+            <i class="fas fa-store-slash empty-icon"></i>
+            <h3>Nenhum salão cadastrado</h3>
+            <p class="field-note">Cadastre seu primeiro salão para começar!</p>
+            <a href="{{ url_for('register_salon') }}" class="btn btn-primary mt-3">
+                <i class="fas fa-plus"></i> Cadastrar Primeiro Salão
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Formulário oculto para deletar salão -->
+    <form id="deleteForm" method="POST" style="display: none;">
+        <input type="hidden" name="salon_id" id="deleteSalonId">
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/list_salons.js') }}"></script>
+{% endblock %}
+
