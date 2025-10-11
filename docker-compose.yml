@@ -11,6 +11,7 @@ services:
       DB_PASSWORD: vivian_password
       DB_NAME: users
       DB_PORT: 3306
+      TZ: "America/Sao_Paulo"
     ports:
       - "8080:8080"
     networks:
@@ -30,6 +31,7 @@ services:
       MYSQL_DATABASE: users
       MYSQL_USER: vivian_user
       MYSQL_PASSWORD: vivian_password
+      TZ: "America/Sao_Paulo"
     ports:
       - "3306:3306"
     volumes:
