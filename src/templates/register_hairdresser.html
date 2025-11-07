@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Cabeleireiro - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="card register-container">
+    <div class="text-center mb-3">
+        <h2 class="page-title">
+            <i class="fas fa-user-tie"></i> Cadastrar Cabeleireiro
+        </h2>
+        <p class="page-subtitle">
+            Preencha os dados abaixo para cadastrar um novo cabeleireiro no sistema
+        </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('register_hairdresser') }}" id="registerHairdresserForm">
+        <div class="form-group">
+            <label for="name">
+                <i class="fas fa-user"></i> Nome Completo <span class="required">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-control" 
+                placeholder="Digite o nome completo do cabeleireiro"
+                required
+                maxlength="255"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="salon_id">
+                <i class="fas fa-store"></i> Salão <span class="required">*</span>
+            </label>
+            <select 
+                id="salon_id" 
+                name="salon_id" 
+                class="form-control" 
+                required
+            >
+                <option value="">Selecione um salão</option>
+                {% for salon in salons %}
+                    <option value="{{ salon.id }}">{{ salon.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="specialties">
+                <i class="fas fa-star"></i> Especialidades
+            </label>
+            <textarea 
+                id="specialties" 
+                name="specialties" 
+                class="form-control" 
+                placeholder="Ex: Cortes masculinos, Coloração, Penteados, etc. (opcional)"
+                maxlength="500"
+                rows="3"
+            ></textarea>
+            <small class="field-note">Máximo de 500 caracteres</small>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">
+                <i class="fas fa-phone"></i> Telefone <span class="required">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="phone" 
+                name="phone" 
+                class="form-control" 
+                placeholder="(11) 99999-9999"
+                required
+                maxlength="15"
+            >
+            <small class="field-note">Formato: (XX) XXXXX-XXXX</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">
+                <i class="fas fa-envelope"></i> E-mail <span class="required">*</span>
+            </label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-control" 
+                placeholder="email@exemplo.com"
+                required
+                maxlength="100"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="image_url">
+                <i class="fas fa-image"></i> URL da Foto
+            </label>
+            <input 
+                type="url" 
+                id="image_url" 
+                name="image_url" 
+                class="form-control" 
+                placeholder="https://exemplo.com/foto.jpg (opcional)"
+                maxlength="500"
+            >
+            <small class="field-note">Informe uma URL válida da foto (ex: https://...)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">
+                <i class="fas fa-info-circle"></i> Biografia / Descrição
+            </label>
+            <textarea 
+                id="bio" 
+                name="bio" 
+                class="form-control" 
+                placeholder="Breve descrição sobre o profissional, experiência, etc. (opcional)"
+                rows="4"
+            ></textarea>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-full-width">
+                <i class="fas fa-check"></i> Cadastrar Cabeleireiro
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="{{ url_for('profile') }}" class="btn mt-3">
+            <i class="fas fa-arrow-left"></i> Voltar ao Perfil
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/register_hairdresser.js') }}"></script>
+{% endblock %}
+

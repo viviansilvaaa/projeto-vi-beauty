@@ -20,6 +20,7 @@
                         <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Meu Perfil</a></li>
                         {% if session.user_id == 1 %}
                             <li><a href="{{ url_for('list_salons') }}"><i class="fas fa-store"></i> Gerenciar Salões</a></li>
+                            <li><a href="{{ url_for('list_hairdressers') }}"><i class="fas fa-user-tie"></i> Gerenciar Cabeleireiros</a></li>
                         {% endif %}
                         <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                     {% else %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Cabeleireiros Cadastrados - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="salons-container">
+    <div class="text-center mb-3">
+        <h2 class="page-title">
+            <i class="fas fa-user-tie"></i> Cabeleireiros Cadastrados
+        </h2>
+        <p class="page-subtitle">
+            Visualize e gerencie os cabeleireiros cadastrados no sistema
+        </p>
+    </div>
+
+    <div class="actions-bar">
+        <a href="{{ url_for('register_hairdresser') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Cadastrar Novo Cabeleireiro
+        </a>
+    </div>
+
+    {% if hairdressers %}
+        <div class="salons-grid">
+            {% for hairdresser in hairdressers %}
+                <div class="salon-card">
+                    <div class="salon-image">
+                        {% if hairdresser.image_url %}
+                            <img src="{{ hairdresser.image_url }}" alt="{{ hairdresser.name }}" onerror="this.src='https://via.placeholder.com/400x300/6a2c70/ffffff?text=Sem+Foto'">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x300/6a2c70/ffffff?text=Sem+Foto" alt="{{ hairdresser.name }}">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="salon-content">
+                        <h3 class="salon-name">
+                            <i class="fas fa-user"></i> {{ hairdresser.name }}
+                        </h3>
+                        
+                        <p class="salon-description" style="background-color: #f8f4ff; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                            <i class="fas fa-store"></i> <strong>Salão:</strong> {{ hairdresser.salon_name }}
+                        </p>
+                        
+                        {% if hairdresser.specialties %}
+                            <p class="salon-description">
+                                <i class="fas fa-star"></i> <strong>Especialidades:</strong> {{ hairdresser.specialties }}
+                            </p>
+                        {% endif %}
+                        
+                        <div class="salon-info">
+                            <p class="salon-phone">
+                                <i class="fas fa-phone"></i> {{ hairdresser.phone }}
+                            </p>
+                            
+                            {% if hairdresser.email %}
+                                <p class="salon-address">
+                                    <i class="fas fa-envelope"></i> {{ hairdresser.email }}
+                                </p>
+                            {% endif %}
+                            
+                            {% if hairdresser.bio %}
+                                <p class="salon-hours">
+                                    <i class="fas fa-info-circle"></i> {{ hairdresser.bio }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="salon-meta">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-plus"></i> 
+                                Cadastrado em: {{ hairdresser.created_at.strftime('%d/%m/%Y às %H:%M') if hairdresser.created_at else 'N/A' }}
+                            </small>
+                            {% if hairdresser.updated_at and hairdresser.updated_at != hairdresser.created_at %}
+                                <small class="text-muted">
+                                    <i class="fas fa-edit"></i> 
+                                    Atualizado em: {{ hairdresser.updated_at.strftime('%d/%m/%Y às %H:%M') }}
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="salon-actions">
+                            <a href="{{ url_for('edit_hairdresser', hairdresser_id=hairdresser.id) }}" class="btn btn-edit">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            
+                            <button 
+                                onclick="confirmDelete({{ hairdresser.id }}, '{{ hairdresser.name }}')" 
+                                class="btn btn-delete">
+                                <i class="fas fa-trash-alt"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card text-center empty-state">
+            <i class="fas fa-user-slash empty-icon"></i>
+            <h3>Nenhum cabeleireiro cadastrado</h3>
+            <p class="field-note">Cadastre seu primeiro cabeleireiro para começar!</p>
+            <a href="{{ url_for('register_hairdresser') }}" class="btn btn-primary mt-3">
+                <i class="fas fa-plus"></i> Cadastrar Primeiro Cabeleireiro
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Formulário oculto para deletar cabeleireiro -->
+    <form id="deleteForm" method="POST" style="display: none;">
+        <input type="hidden" name="hairdresser_id" id="deleteHairdresserId">
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/list_hairdressers.js') }}"></script>
+{% endblock %}
+

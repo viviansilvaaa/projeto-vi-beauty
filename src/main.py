@@ -361,6 +361,203 @@ def delete_salon(salon_id):
     
     return redirect(url_for('list_salons'))
 
+@app.route('/register_hairdresser', methods=['GET', 'POST'])
+@admin_required
+def register_hairdresser():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        salon_id = request.form.get('salon_id', '').strip()
+        specialties = request.form.get('specialties', '').strip()
+        phone = request.form.get('phone', '').strip()
+        email = request.form.get('email', '').strip()
+        image_url = request.form.get('image_url', '').strip()
+        bio = request.form.get('bio', '').strip()
+        
+        # Validação de campos obrigatórios
+        if not salon_id:
+            flash('É obrigatório selecionar um salão!', 'error')
+            try:
+                connection = get_db_connection()
+                cur = connection.cursor()
+                cur.execute("SELECT id, name FROM salons ORDER BY name ASC")
+                salons = cur.fetchall()
+                return render_template('register_hairdresser.html', salons=salons)
+            except Exception as e:
+                flash(f'Erro ao carregar salões: {str(e)}', 'error')
+                return redirect(url_for('list_salons'))
+            finally:
+                if 'connection' in locals():
+                    connection.close()
+                if 'cur' in locals():
+                    cur.close()
+        
+        try:
+            connection = get_db_connection()
+            cur = connection.cursor()
+            
+            # Insere o novo cabeleireiro
+            cur.execute(
+                "INSERT INTO hairdressers (name, salon_id, specialties, phone, email, image_url, bio) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (name, salon_id, specialties if specialties else None, phone, email, image_url if image_url else None, bio if bio else None)
+            )
+            connection.commit()
+            
+            flash('Cabeleireiro cadastrado com sucesso!', 'success')
+            return redirect(url_for('register_hairdresser'))
+            
+        except Exception as e:
+            flash(f'Erro ao cadastrar cabeleireiro: {str(e)}', 'error')
+        finally:
+            if 'connection' in locals():
+                connection.close()
+            if 'cur' in locals():
+                cur.close()
+    
+    # GET - Busca os salões para o formulário
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        cur.execute("SELECT id, name FROM salons ORDER BY name ASC")
+        salons = cur.fetchall()
+        
+        if not salons:
+            flash('É necessário cadastrar pelo menos um salão antes de cadastrar cabeleireiros!', 'error')
+            return redirect(url_for('register_salon'))
+        
+        return render_template('register_hairdresser.html', salons=salons)
+    except Exception as e:
+        flash(f'Erro ao carregar salões: {str(e)}', 'error')
+        return redirect(url_for('list_salons'))
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/list_hairdressers')
+@admin_required
+def list_hairdressers():
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        # Busca todos os cabeleireiros com informações do salão
+        cur.execute("""
+            SELECT h.*, s.name as salon_name 
+            FROM hairdressers h 
+            INNER JOIN salons s ON h.salon_id = s.id 
+            ORDER BY s.name ASC, h.name ASC
+        """)
+        hairdressers = cur.fetchall()
+        
+        return render_template('list_hairdressers.html', hairdressers=hairdressers)
+        
+    except Exception as e:
+        flash(f'Erro ao carregar cabeleireiros: {str(e)}', 'error')
+        return redirect(url_for('profile'))
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/edit_hairdresser/<int:hairdresser_id>', methods=['GET', 'POST'])
+@admin_required
+def edit_hairdresser(hairdresser_id):
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        salon_id = request.form.get('salon_id', '').strip()
+        specialties = request.form.get('specialties', '').strip()
+        phone = request.form.get('phone', '').strip()
+        email = request.form.get('email', '').strip()
+        image_url = request.form.get('image_url', '').strip()
+        bio = request.form.get('bio', '').strip()
+        
+        # Validação de campos obrigatórios
+        if not salon_id:
+            flash('É obrigatório selecionar um salão!', 'error')
+            return redirect(url_for('edit_hairdresser', hairdresser_id=hairdresser_id))
+        
+        try:
+            connection = get_db_connection()
+            cur = connection.cursor()
+            
+            
+            # Atualiza os dados do cabeleireiro
+            cur.execute(
+                "UPDATE hairdressers SET name = %s, salon_id = %s, specialties = %s, phone = %s, email = %s, image_url = %s, bio = %s WHERE id = %s",
+                (name, salon_id, specialties if specialties else None, phone, email, image_url if image_url else None, bio if bio else None, hairdresser_id)
+            )
+            connection.commit()
+            
+            flash('Cabeleireiro atualizado com sucesso!', 'success')
+            return redirect(url_for('list_hairdressers'))
+            
+        except Exception as e:
+            flash(f'Erro ao atualizar cabeleireiro: {str(e)}', 'error')
+        finally:
+            if 'connection' in locals():
+                connection.close()
+            if 'cur' in locals():
+                cur.close()
+    
+    # GET - Busca os dados do cabeleireiro e os salões para edição
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        cur.execute("SELECT * FROM hairdressers WHERE id = %s", (hairdresser_id,))
+        hairdresser = cur.fetchone()
+        
+        if not hairdresser:
+            flash('Cabeleireiro não encontrado!', 'error')
+            return redirect(url_for('list_hairdressers'))
+        
+        cur.execute("SELECT id, name FROM salons ORDER BY name ASC")
+        salons = cur.fetchall()
+        
+        return render_template('edit_hairdresser.html', hairdresser=hairdresser, salons=salons)
+        
+    except Exception as e:
+        flash(f'Erro ao carregar dados do cabeleireiro: {str(e)}', 'error')
+        return redirect(url_for('list_hairdressers'))
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+
+@app.route('/delete_hairdresser/<int:hairdresser_id>', methods=['POST'])
+@admin_required
+def delete_hairdresser(hairdresser_id):
+    try:
+        connection = get_db_connection()
+        cur = connection.cursor()
+        
+        # Verifica se o cabeleireiro existe
+        cur.execute("SELECT name FROM hairdressers WHERE id = %s", (hairdresser_id,))
+        hairdresser = cur.fetchone()
+        
+        if not hairdresser:
+            flash('Cabeleireiro não encontrado!', 'error')
+            return redirect(url_for('list_hairdressers'))
+        
+        # Deleta o cabeleireiro
+        cur.execute("DELETE FROM hairdressers WHERE id = %s", (hairdresser_id,))
+        connection.commit()
+        
+        flash(f'Cabeleireiro "{hairdresser["name"]}" excluído com sucesso!', 'success')
+        
+    except Exception as e:
+        flash(f'Erro ao excluir cabeleireiro: {str(e)}', 'error')
+    finally:
+        if 'connection' in locals():
+            connection.close()
+        if 'cur' in locals():
+            cur.close()
+    
+    return redirect(url_for('list_hairdressers'))
+
 @app.route('/logout')
 def logout():
     session.clear()
