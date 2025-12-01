@@ -7,24 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         nameField.focus();
     }
 
-    // Contador de caracteres para especialidades
-    const specialtiesField = document.getElementById('specialties');
-    if (specialtiesField) {
-        specialtiesField.addEventListener('input', function() {
-            const remaining = 500 - this.value.length;
-            const noteElement = this.nextElementSibling;
-            if (noteElement?.classList.contains('field-note')) {
-                noteElement.textContent = `${remaining} caracteres restantes (máximo 500)`;
-                if (remaining < 50) {
-                    noteElement.style.color = '#e74c3c';
-                } else {
-                    noteElement.style.color = '';
-                }
-            }
-        });
-    }
-
-    // Máscara para telefone
+    // Mascara para telefone
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
         phoneInput.addEventListener('input', function() {
@@ -60,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Validação do formulário ao submeter
+    // Validacao do formulario ao submeter
     const registerHairdresserForm = document.getElementById('registerHairdresserForm');
     if (registerHairdresserForm) {
         registerHairdresserForm.addEventListener('submit', function(e) {
@@ -69,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
             const imageUrl = document.getElementById('image_url').value.trim();
-            const specialties = document.getElementById('specialties').value.trim();
 
             // Validação de campos obrigatórios
             if (!name) {
@@ -112,33 +94,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Validação da URL da imagem (se preenchida)
+            // Validacao da URL da imagem (se preenchida)
             if (imageUrl) {
                 try {
                     const urlObj = new URL(imageUrl);
                     if (!urlObj.protocol.startsWith('http')) {
                         e.preventDefault();
-                        alert('A URL da imagem deve começar com http:// ou https://');
+                        alert('A URL da imagem deve comecar com http:// ou https://');
                         document.getElementById('image_url').focus();
                         return;
                     }
                 } catch (error) {
                     e.preventDefault();
-                    alert('Por favor, informe uma URL válida para a imagem.');
+                    alert('Por favor, informe uma URL valida para a imagem.');
                     document.getElementById('image_url').focus();
                     return;
                 }
             }
 
-            // Validação do tamanho das especialidades
-            if (specialties && specialties.length > 500) {
-                e.preventDefault();
-                alert('As especialidades devem ter no máximo 500 caracteres!');
-                document.getElementById('specialties').focus();
-                return;
-            }
-
-            // Se chegou aqui, tudo está válido
+            // Se chegou aqui, tudo esta valido
             return true;
         });
     }

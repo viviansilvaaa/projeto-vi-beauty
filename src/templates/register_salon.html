@@ -92,18 +92,60 @@
         </div>
 
         <div class="form-group">
-            <label for="business_hours">
-                <i class="fas fa-clock"></i> Horário de Funcionamento
+            <label>
+                <i class="fas fa-calendar-week"></i> Dias de Funcionamento <span class="required">*</span>
             </label>
-            <input 
-                type="text" 
-                id="business_hours" 
-                name="business_hours" 
-                class="form-control" 
-                placeholder="Ex: Seg-Sex: 09h-18h, Sáb: 09h-13h"
-                maxlength="255"
-            >
-            <small class="field-note">Opcional</small>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="opening_day">De:</label>
+                    <select id="opening_day" name="opening_day" class="form-control" required>
+                        {% for value, label in weekdays %}
+                            <option value="{{ value }}" {% if value == 'segunda' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="closing_day">Ate:</label>
+                    <select id="closing_day" name="closing_day" class="form-control" required>
+                        {% for value, label in weekdays %}
+                            <option value="{{ value }}" {% if value == 'sexta' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <i class="fas fa-clock"></i> Horario de Funcionamento <span class="required">*</span>
+            </label>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="opening_time">Abertura:</label>
+                    <input 
+                        type="time" 
+                        id="opening_time" 
+                        name="opening_time" 
+                        class="form-control" 
+                        value="09:00"
+                        required
+                        step="1800"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="closing_time">Fechamento:</label>
+                    <input 
+                        type="time" 
+                        id="closing_time" 
+                        name="closing_time" 
+                        class="form-control" 
+                        value="18:00"
+                        required
+                        step="1800"
+                    >
+                </div>
+            </div>
+            <small class="field-note">Horarios em formato 24h com intervalos de 30 minutos</small>
         </div>
 
         <div class="form-group text-center">

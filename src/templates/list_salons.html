@@ -47,11 +47,12 @@
                                 <i class="fas fa-phone"></i> {{ salon.phone }}
                             </p>
                             
-                            {% if salon.business_hours %}
-                                <p class="salon-hours">
-                                    <i class="fas fa-clock"></i> {{ salon.business_hours }}
-                                </p>
-                            {% endif %}
+                            <p class="salon-hours">
+                                <i class="fas fa-calendar-week"></i> {{ salon.opening_day|capitalize }} a {{ salon.closing_day|capitalize }}
+                            </p>
+                            <p class="salon-hours">
+                                <i class="fas fa-clock"></i> {{ salon.opening_time|format_time }} - {{ salon.closing_time|format_time }}
+                            </p>
                         </div>
                         
                         <div class="salon-meta">

@@ -47,18 +47,18 @@
         </div>
 
         <div class="form-group">
-            <label for="specialties">
+            <label>
                 <i class="fas fa-star"></i> Especialidades
             </label>
-            <textarea 
-                id="specialties" 
-                name="specialties" 
-                class="form-control" 
-                placeholder="Ex: Cortes masculinos, Coloração, Penteados, etc. (opcional)"
-                maxlength="500"
-                rows="3"
-            ></textarea>
-            <small class="field-note">Máximo de 500 caracteres</small>
+            <div class="specialties-grid">
+                {% for specialty in specialties_list %}
+                <label class="checkbox-item">
+                    <input type="checkbox" name="specialties" value="{{ specialty }}">
+                    <span class="checkbox-label">{{ specialty }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            <small class="field-note">Selecione as especialidades do cabeleireiro</small>
         </div>
 
         <div class="form-group">

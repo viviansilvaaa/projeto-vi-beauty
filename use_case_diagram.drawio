@@ -1,0 +1,103 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.2.1">
+  <diagram name="Use Case Diagram - Vi Beauty" id="vi-beauty-use-case-diagram">
+    <mxGraphModel dx="2066" dy="793" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system-boundary" parent="1" style="swimlane;startSize=30;fontSize=14;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="Sistema Vi Beauty" vertex="1">
+          <mxGeometry height="740" width="700" x="300" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-register" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Fazer Cadastro" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-login" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Fazer Login" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-logout" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Fazer Logout" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-view-profile" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Visualizar Perfil" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-update-profile" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Atualizar Perfil" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-view-appointments" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Visualizar&#xa;Agendamentos" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-create-appointment" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Criar&#xa;Agendamento" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-update-appointment" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Editar&#xa;Agendamento" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-cancel-appointment" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Cancelar&#xa;Agendamento" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-delete-appointment" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Excluir&#xa;Agendamento" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-search-hairdressers" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Buscar Cabeleireiros&#xa;por Salão" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-check-available-times" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Verificar Horários&#xa;Disponíveis" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-check-salon-schedule" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Consultar Horário&#xa;de Funcionamento" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-register-salon" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Cadastrar Salão" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-list-salons" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Listar Salões" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-edit-salon" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Editar Salão" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-delete-salon" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Excluir Salão" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-register-hairdresser" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Cadastrar&#xa;Cabeleireiro" vertex="1">
+          <mxGeometry height="60" width="140" x="100" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-list-hairdressers" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Listar&#xa;Cabeleireiros" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-edit-hairdresser" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Editar&#xa;Cabeleireiro" vertex="1">
+          <mxGeometry height="60" width="140" x="460" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-delete-hairdresser" parent="system-boundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Excluir&#xa;Cabeleireiro" vertex="1">
+          <mxGeometry height="60" width="140" x="280" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-2" edge="1" parent="1" source="actor-user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0.1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-register">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-4" edge="1" parent="1" source="actor-user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0.1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-view-profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-5" edge="1" parent="1" source="actor-user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0.1;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc-view-appointments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-6" edge="1" parent="1" source="actor-user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-cancel-appointment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-user" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Cliente/Usuário&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="60" x="100" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-7" edge="1" parent="1" source="actor-admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-register-salon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-8" edge="1" parent="1" source="actor-admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="uc-delete-salon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OFsXIq4MrAOmgsriKpoD-9" edge="1" parent="1" source="actor-admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-edit-hairdresser">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-admin" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Administrador&lt;/font&gt;" vertex="1">
+          <mxGeometry height="120" width="60" x="1100" y="500" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

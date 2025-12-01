@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Agendamentos - Vi Beauty{% endblock %}
+
+{% block content %}
+<div class="appointments-container">
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-calendar-check"></i> Meus Agendamentos</h1>
+            <p class="subtitle">Gerencie seus horários marcados</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCreateModal()">
+            <i class="fas fa-plus"></i> Novo Agendamento
+        </button>
+    </div>
+
+    {% if appointments %}
+        <div class="appointments-grid">
+            {% for appointment in appointments %}
+            <div class="appointment-card {% if appointment.status == 'cancelled' %}cancelled{% endif %}">
+                <div class="appointment-header">
+                    <div class="appointment-date-block">
+                        <div class="day">{{ appointment.appointment_date.strftime('%d') }}</div>
+                        <div class="month">{{ appointment.appointment_date.strftime('%b').upper() }}</div>
+                        <div class="year">{{ appointment.appointment_date.strftime('%Y') }}</div>
+                    </div>
+                    <div class="appointment-time-info">
+                        <div class="time">
+                            <i class="fas fa-clock"></i> {{ appointment.appointment_time|format_time }}
+                        </div>
+                        <div class="status-badge">
+                            {% if appointment.status == 'confirmed' %}
+                                <span class="badge badge-success"><i class="fas fa-check-circle"></i> Confirmado</span>
+                            {% elif appointment.status == 'pending' %}
+                                <span class="badge badge-warning"><i class="fas fa-clock"></i> Pendente</span>
+                            {% elif appointment.status == 'cancelled' %}
+                                <span class="badge badge-danger"><i class="fas fa-times-circle"></i> Cancelado</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="appointment-body">
+                    <div class="info-row">
+                        <i class="fas fa-store"></i>
+                        <div>
+                            <strong>Salão</strong>
+                            <p>{{ appointment.salon_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fas fa-user-tie"></i>
+                        <div>
+                            <strong>Cabeleireiro(a)</strong>
+                            <p>{{ appointment.hairdresser_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fas fa-cut"></i>
+                        <div>
+                            <strong>Serviço</strong>
+                            <p>{{ appointment.service_type }}</p>
+                        </div>
+                    </div>
+
+                    {% if appointment.notes %}
+                    <div class="info-row">
+                        <i class="fas fa-sticky-note"></i>
+                        <div>
+                            <strong>Observações</strong>
+                            <p>{{ appointment.notes }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="appointment-actions">
+                    {% if appointment.status != 'cancelled' %}
+                        <button class="btn btn-sm btn-secondary" onclick="openEditModal({{ appointment.id }}, {{ appointment.salon_id }}, {{ appointment.hairdresser_id }}, '{{ appointment.appointment_date }}', '{{ appointment.appointment_time|format_time }}', '{{ appointment.service_type }}', '{{ appointment.notes|replace("'", "\\'") if appointment.notes else '' }}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-warning" onclick="cancelAppointment({{ appointment.id }})">
+                            <i class="fas fa-ban"></i> Cancelar
+                        </button>
+                    {% endif %}
+                    <button class="btn btn-sm btn-danger" onclick="deleteAppointment({{ appointment.id }})">
+                        <i class="fas fa-trash"></i> Excluir
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>Nenhum agendamento encontrado</h3>
+            <p>Você ainda não tem agendamentos marcados</p>
+            <button class="btn btn-primary" onclick="openCreateModal()">
+                <i class="fas fa-plus"></i> Fazer primeiro agendamento
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal de Criar Agendamento -->
+<div id="createModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-calendar-plus"></i> Novo Agendamento</h2>
+            <span class="close" onclick="closeCreateModal()">&times;</span>
+        </div>
+        <form method="POST" action="{{ url_for('create_appointment') }}" onsubmit="return validateForm()">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="salon_id"><i class="fas fa-store"></i> Salão *</label>
+                    <select id="salon_id" name="salon_id" class="form-control" required onchange="loadHairdressers(this.value, 'create')">
+                        <option value="">Selecione um salão</option>
+                        {% for salon in salons %}
+                            <option value="{{ salon.id }}">{{ salon.name }} - {{ salon.address }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="hairdresser_id"><i class="fas fa-user-tie"></i> Cabeleireiro(a) *</label>
+                    <select id="hairdresser_id" name="hairdresser_id" class="form-control" required disabled onchange="loadServices(this.value, 'create')">
+                        <option value="">Selecione um salao primeiro</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointment_date"><i class="fas fa-calendar"></i> Data *</label>
+                        <input type="date" id="appointment_date" name="appointment_date" class="form-control" required min="{{ today }}" onchange="loadAvailableTimes('create')">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointment_time"><i class="fas fa-clock"></i> Horario * <small style="color: rgba(255,255,255,0.6); font-weight: normal;">(formato 24h)</small></label>
+                        <select id="appointment_time" name="appointment_time" class="form-control" required disabled>
+                            <option value="">Selecione cabeleireiro e data primeiro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="service_type"><i class="fas fa-cut"></i> Tipo de Servico *</label>
+                    <select id="service_type" name="service_type" class="form-control" required disabled>
+                        <option value="">Selecione um cabeleireiro primeiro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes"><i class="fas fa-sticky-note"></i> Observações</label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Alguma observação especial? (opcional)"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Confirmar Agendamento
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Editar Agendamento -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-edit"></i> Editar Agendamento</h2>
+            <span class="close" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form id="editForm" method="POST" onsubmit="return validateEditForm()">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit_salon_id"><i class="fas fa-store"></i> Salão *</label>
+                    <select id="edit_salon_id" name="salon_id" class="form-control" required onchange="loadHairdressers(this.value, 'edit')">
+                        <option value="">Selecione um salão</option>
+                        {% for salon in salons %}
+                            <option value="{{ salon.id }}">{{ salon.name }} - {{ salon.address }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_hairdresser_id"><i class="fas fa-user-tie"></i> Cabeleireiro(a) *</label>
+                    <select id="edit_hairdresser_id" name="hairdresser_id" class="form-control" required onchange="loadServices(this.value, 'edit')">
+                        <option value="">Selecione um salao primeiro</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit_appointment_date"><i class="fas fa-calendar"></i> Data *</label>
+                        <input type="date" id="edit_appointment_date" name="appointment_date" class="form-control" required min="{{ today }}" onchange="loadAvailableTimes('edit')">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_appointment_time"><i class="fas fa-clock"></i> Horario * <small style="color: rgba(255,255,255,0.6); font-weight: normal;">(formato 24h)</small></label>
+                        <select id="edit_appointment_time" name="appointment_time" class="form-control" required disabled>
+                            <option value="">Selecione cabeleireiro e data primeiro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_service_type"><i class="fas fa-cut"></i> Tipo de Servico *</label>
+                    <select id="edit_service_type" name="service_type" class="form-control" required disabled>
+                        <option value="">Selecione um cabeleireiro primeiro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_notes"><i class="fas fa-sticky-note"></i> Observações</label>
+                    <textarea id="edit_notes" name="notes" class="form-control" rows="3" placeholder="Alguma observação especial? (opcional)"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/appointments.js') }}"></script>
+{% endblock %}
